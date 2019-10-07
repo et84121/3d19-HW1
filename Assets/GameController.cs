@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     public Vector2 point;
     void Start()
     {
-        
+        GenerateFood();
     }
 
     void Update()
@@ -38,12 +38,12 @@ public class GameController : MonoBehaviour
             int y = (int)GameObject.Find("Grid").transform.position.y;
             Instantiate(
             SSFood,
-            new Vector2(Random.Range(-xLimit+x, xLimit+x), Random.Range(-yLimit+y, yLimit+y)),
+            new Vector2(Random.Range(-xLimit + x + 1, xLimit + x), Random.Range(-yLimit + y, yLimit + y)),
             Quaternion.identity,
             GameObject.Find("Grid").transform
             );
         }
-        
+
     }
 
 }

@@ -8,13 +8,14 @@ public class SnakeHead : MonoBehaviour
     List<Transform> Bodylist = new List<Transform>();
 
     //prefab body object
-    public GameObject Body;  
+    public GameObject Body;
     private bool isEaten = false;
     private bool isGameEnded = false;
 
-    public float gameSpeed = 0.1f; 
+    public float gameSpeed = 0.1f;
+    public float burstTime = 0.5f;
 
-    Vector2 direction = Vector2.up; 
+    Vector2 direction = Vector2.up;
 
     // Use this for initialization
     void Start()
@@ -53,6 +54,10 @@ public class SnakeHead : MonoBehaviour
                 direction = Vector2.right;
                 GetComponent<SpriteRenderer>().flipX = false;
             }
+            if (Input.GetKey(KeyCode.Space))
+            {
+                StartCoroutine(FiveSecondsCooldown());
+            }
         }
     }
     void FixedUpdate()
@@ -84,8 +89,13 @@ public class SnakeHead : MonoBehaviour
         }
     }
 
+    public IEnumerator FiveSecondsCooldown()
+    {
+        Time.timeScale = gameSpeed * 4;
+        yield return new WaitForSeconds(burstTime); // 
+        Time.timeScale = gameSpeed;
+    }
 
-    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Food")
@@ -99,11 +109,13 @@ public class SnakeHead : MonoBehaviour
         else if (other.tag == "Body")
         {
             GameObject.Find("ScoreText").GetComponent<Text>().text = "You eat youself body!!\nPress space-bar to start another game";
+            GameObject.Find("ScoreText").GetComponent<Text>().fontSize = 105;
             isGameEnded = true;
         }
-        else 
+        else
         {
             GameObject.Find("ScoreText").GetComponent<Text>().text = "You hit the Wall!!\nPress space-bar to start another game";
+            GameObject.Find("ScoreText").GetComponent<Text>().fontSize = 105;
             isGameEnded = true;
         }
     }
